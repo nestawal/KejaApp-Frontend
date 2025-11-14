@@ -401,4 +401,10 @@ form p a{
     min-width: 100%;
   }
 
+  .Dashboard{
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto; 
+    gap: 10px;
+  }
 }
