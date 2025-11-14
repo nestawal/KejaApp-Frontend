@@ -1,0 +1,75 @@
+* {
+  box-sizing: border-box;
+}
+
+.postInfo{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.postDetails{
+    display: block;
+    max-height: fit-content;
+}
+
+.detButtons{
+    display: flex;
+    align-content: space-between;
+}
+
+.postInfo--profile{
+     width: 35%;
+    margin: 0 auto;
+    display: flex;
+    background-color: lightgreen;
+}
+
+.postInfo--details{
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+}
+
+.postInfo--choice{
+    width: 45%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+
+}
+
+.postInfo--choice button{
+    border: 0cap;
+    background-color: lightsteelblue;
+    font-size: 26px;
+}
+
+.postInfo--choice button:focus{
+    background-color: lightgreen;
+}
+
+.infotable{
+    font-size: 25px;
+    width: 75%;
+    margin: 0 auto;
+    border-spacing: 30px 10px;
+    background-color: grey;
+    border-radius: 1cap;
+}
+
+.infotable thead{
+    text-decoration: underline;
+}
+
+.infotable td,th{
+    text-align: center;
+}
+
+.infotable td,th button{
+    border-radius: 50%;
+}
+
+.accept{
+    background-color: aquamarine;
+}

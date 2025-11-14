@@ -1,0 +1,404 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #EFF4EB;
+  
+}
+
+nav {
+  height: 50px;
+  display: flex;
+  padding: 20px 36px;
+  box-shadow: 0px 2.98256px 7.4564px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: space-between;
+  max-width: 100%;
+  border-bottom: 2px  solid #3c00a3; 
+  background-color: #EFF4EB;
+}
+.nav
+
+.bold {
+  font-weight: bold;
+}
+
+.gray {
+  color: #918E9B;
+}
+
+.nav--logo {
+  width: 75px;
+  height: 50px;
+}
+nav h3{
+  font-family: sans-serif;
+  font-size: 35px;
+  font-style: italic;
+}
+
+.nav--cart {
+  width: 75px;
+  height: 50px;
+  border-width: 0cap;
+  padding: 5px;
+
+  margin-bottom: 7px;
+}
+.navBrand{
+  align-items: center;
+  display: flex;
+  
+}
+.navFunctions{
+  width: 15%;
+  align-items: center;
+  display: flex;
+ justify-content: space-between;
+}
+
+.title{
+  font-size: 50px;
+  color: blueviolet;
+  font-family: "Bungee Tint", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+section {
+  padding: 20px;
+}
+
+.bodySec{
+  display: flex;
+  flex-direction: row;
+  
+  background: #EFF4EB;
+  background-position: center;
+  background-size: cover;
+}
+
+.SideSec{
+  display: flex;
+  height: fit-content;
+  flex-direction: column;
+  min-width: 25%;
+  background-color: #3c00a3;
+}
+
+.SideSec Link{
+  width: fit-content;
+}
+
+
+.cards-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap:20px;
+  align-content: space-evenly;
+  overflow-x: auto;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.card {
+  background: #D9D9D9;
+  min-width: 175px;
+  font-size: 12px;
+  flex: 0 0 auto;         /* ADD */
+  display: flex;          /* ADD */
+  flex-direction: column; /* ADD */
+  position: relative;
+  border-radius: 1rem;
+  padding: 5px;
+}
+
+.card:hover {
+  border-width: 5px;
+  border-radius: 10px;
+  border-color: #4c3258;
+}
+
+.card--image {
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 150px;
+  max-height: 150px;
+  border-radius: 9px;
+  margin-bottom: 9px;
+}
+
+/* ADD */
+.card--title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card--stats {
+  display: flex;
+  align-items: center;
+}
+
+.card--star {
+  height: 14px;
+}
+
+/* ADD */
+.card--price {
+  margin-top: auto;
+}
+
+.card--badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background-color: white;
+  padding: 5px 7px;
+  border-radius: 2px;
+  font-weight: bold;
+}
+
+.card button{
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  max-width: fit-content;
+  padding-left: 25px;
+  padding-right: 25px;
+  background-color: #18932a;
+}
+
+/*for the signUp part */
+.container{
+  width: 100%;
+  height: 100vh;
+  background-image: linear-gradient(rgba(0,0,50,0.8),rgba(0,0,50,0.8)), url(JJK-bg.jpg);
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+
+.form{
+  width: 90%;
+  max-width: 450px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background-color: #fff;
+  padding: 50px 60px 70px;
+  text-align: center;
+}
+
+.form h1{
+  font-size: 30px;
+  margin-bottom: 60px;
+  color: #3c00a3;
+  position: relative;
+}
+
+.form h1::after{
+  content: '';
+  width: 30px;
+  height: 4px;
+  border-radius: 3px;
+  background: #3c00a0;
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.input-field{
+  background: #eaeaea;
+  margin: 15px 0;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  max-height: 65px;
+  transition: max-height 0.5s;
+  overflow: hidden;
+}
+input{
+  width: 100%;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  padding: 18px 15px;
+}
+.input-field i{
+  margin-left: 15px;
+  color: #999;
+}
+
+form p{
+  text-align: left;
+  font-size: 13px;
+}
+form p a{
+  text-decoration: none;
+  color:#3c00a0;
+}
+
+.btn-field{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.btn-field button{
+  flex-basis: 48%;
+  background: #3c00a0;
+  color:#fff;
+  height: 40px;
+  border-radius: 20px;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  
+}
+
+.input-group{
+  height: 280px;
+}
+
+.btn-field button.disable{
+  background: #eaeaea;
+  color: #555;
+
+}
+
+.signUp a{
+  text-decoration: none;
+
+}
+/*searchbar*/
+.srchBtn{
+  height: fit-content;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+}
+.srchImg{
+  height: 20px;
+  width: 20px;
+}
+
+.srchSpc{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-height: 90px;
+}
+
+.searchbar{
+  background: #eaeaea;
+ margin: 0 auto;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  max-height: 65px;
+  transition: max-height 0.5s;
+  overflow: hidden;
+  max-width: fit-content;
+  justify-content: center;
+}
+.search{
+  border-color: black;
+  border-width: 5cm;
+  max-width: 305px;
+  background-color: #55555569;
+}
+.searchImg{
+  height: 20px;
+  width: 20px;
+}
+
+.menu{
+  position: relative;
+  display: inline-block;
+  margin-right: 30px;
+}
+
+.dropdown{
+  display: block;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 60px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+
+}
+
+.dropdown-none{
+  display: none;
+}
+
+.AccountDetails{
+  text-align: center;
+}
+.Dashboard{
+  display: flex;
+  flex-direction: row;
+  justify-content: center; 
+  align-items: center;
+  gap: 5px;
+}
+
+.dashComp{
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 150px;
+  max-height: 150px;
+  border-radius: 9px;
+  margin-bottom: 9px;
+  background-color: #918E9B;
+  display: grid;
+  place-items: center;
+}
+
+
+
+/* Smartphones (portrait and landscape) */
+@media only screen and (max-width: 767px) {
+  body {
+    font-size: 14px;
+    max-width: 100%;
+    overflow-x: hidden;
+   
+  }
+
+  nav {
+    height: 90px;
+    padding: 10px;
+    box-shadow: 0px 2.98256px 7.4564px rgba(0, 0, 0, 0.1);
+    overflow-x: hidden;
+  }
+
+  nav h3{
+    font-size: 20px;
+  }
+
+  .nav--logo {
+    width: 55px;
+    height: 30px;
+  }
+  
+  .navBrand h3{
+    font-size: 40px;
+  }
+
+  .cards-list {
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto; 
+    gap: 10px;
+  }
+  .card {
+    min-width: 100%;
+  }
+
+}
