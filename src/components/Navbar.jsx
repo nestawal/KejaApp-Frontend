@@ -25,7 +25,7 @@ export default function Navbar(props) {
     return (
         <nav>
             <div className="navBrand">
-                <img src="/src/images/logoKeja.png" className="nav--logo" />
+                <img src="src/images/logoKeja.png" className="nav--logo" />
                 <h3 className="title">KEJA</h3>
             </div>
             <h3>{props.fullName}</h3>
