@@ -78,7 +78,7 @@ export default function MyPosts(){
             <h1>Your posts</h1>
             <section className="cards-list">
                 {cards}
-                <button onClick={addPostForm}><img src="src/images/plus.png" alt="add" /></button>
+                <button onClick={addPostForm}><img src="/images/plus.png" alt="add" /></button>
             </section>
         </div>
     );

@@ -25,13 +25,13 @@ export default function Navbar(props) {
     return (
         <nav>
             <div className="navBrand">
-                <img src="./src/images/logoKeja.png" className="nav--logo" />
+                <img src="/images/logoKeja.png" className="nav--logo" />
                 <h3 className="title">KEJA</h3>
             </div>
             <h3>{props.fullName}</h3>
             <div className="navFunctions">
                 <button onClick={props.renderSearch} className="srchBtn">
-                  <img   className="srchImg" src="./src/images/search.png" alt="" />
+                  <img   className="srchImg" src="/images/search.png" alt="" />
                 </button>
                 <div className="menu" id="menu" ref={menuRef}>
                     <button onClick={props.showSideBar} id="menu">-</button>
