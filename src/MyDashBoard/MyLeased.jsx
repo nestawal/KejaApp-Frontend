@@ -78,7 +78,7 @@ export default function MyLeased(){
 
     return(
         <div>
-            <h1>Your requests</h1>
+            <h1>Your leased</h1>
             <section className="cards-list">
                 {cards}
                
