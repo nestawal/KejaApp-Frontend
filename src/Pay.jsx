@@ -26,7 +26,7 @@ export default function Pay(){
         e.preventDefault();
 
         if(phone){
-            axios.post(`${url}/paySimulate`,{
+            axios.post(`${url}/pay`,{
                 propertyId : propertyId,
                 personId: personId,
                 phone: phone,
