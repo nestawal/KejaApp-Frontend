@@ -61,10 +61,7 @@ export default function PostInfo(){
                 <div>{post.posts.name}</div>
                 <div><strong>rooms:</strong>{post.posts.rooms}</div>
                 <div>ksh {post.posts.price}</div>
-                <div className="detButtons">
-                    <button>Rent</button>
-                    <button>List</button>
-                </div>
+                
             </div>
             
         </div>
