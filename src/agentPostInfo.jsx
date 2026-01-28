@@ -4,19 +4,23 @@ import axios from "axios";
 import Payments from "./InfoRecord/postPayments.jsx";
 import Accepted from "./InfoRecord/Accepted.jsx";
 import Requests from "./InfoRecord/Requests.jsx";
+import Lease from "./InfoRecord/postLeased.jsx";
 
 export default function AgentPostInfo() {
     const location = useLocation();
     const formData = location.state || {};
-    const { id } = useParams();
+    const { id } = useParams(); // This is the property/post ID
     const [post, setPost] = useState(null);
     const [Record, SetRecord] = useState("requests");
     const [postInfo, setPostInfo] = useState(null);
     const [requestInfo, setRequestInfo] = useState([]);
+    const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [paymentsLoading, setPaymentsLoading] = useState(false);
     
-    const url = "https://kejaapp-backend.onrender.com";
+    //const url = "https://kejaapp-backend.onrender.com";
+    const url = "http://localhost:3001"
 
     useEffect(() => {
         // Only fetch if we have an ID
@@ -78,9 +82,43 @@ export default function AgentPostInfo() {
         findPost();
     }, [id]); // Only re-run when id changes
 
+    // Function to fetch transactions when Payments tab is selected
+    const fetchTransactions = async () => {
+        if (!id) return;
+        
+        setPaymentsLoading(true);
+        try {
+            console.log("Fetching transactions for propertyId:", id);
+            
+            const response = await axios.get(`${url}/transactions/property/${id}`);
+            console.log("Transactions response:", response.data);
+            
+            setTransactions(response.data.transactions || []);
+            
+        } catch (error) {
+            console.error("Error fetching transactions:", error);
+            // Don't show error to user for payments, just log it
+            setTransactions([]);
+        } finally {
+            setPaymentsLoading(false);
+        }
+    };
+
+    // Fetch transactions when Payments tab is selected
+    useEffect(() => {
+        if (Record === "Payments" && id) {
+            fetchTransactions();
+        }
+    }, [Record, id]);
+
     function recordChoice(r) {
         SetRecord(r);
         console.log("Selected record:", r);
+        
+        // Optionally fetch transactions immediately when Payments is clicked
+        if (r === "Payments" && id) {
+            fetchTransactions();
+        }
     }
 
     // Loading state
@@ -137,6 +175,7 @@ export default function AgentPostInfo() {
                 >
                     Accepted
                 </button>
+                <button className={Record === "Payments" ? "active" : ""} onClick={() => recordChoice("Lease")}>Lease</button> 
                 <button 
                     onClick={() => recordChoice("Payments")}
                     className={Record === "Payments" ? "active" : ""}
@@ -148,7 +187,7 @@ export default function AgentPostInfo() {
             {Record === "Requests" && (
                 <Requests
                     info={requestInfo}
-                    postInfo={postInfo ? [postInfo] : []} // Convert to array if needed
+                    postInfo={postInfo ? [postInfo] : []}
                 />
             )}
             
@@ -157,8 +196,23 @@ export default function AgentPostInfo() {
                     postInfo={postInfo}
                 />
             )}
+
+            {Record === "Lease" && postInfo && (
+            <Lease
+                postInfo={postInfo}
+                property={post}
+                onUpdateLease={handleUpdateLease}
+            />
+            )}
             
-            {Record === "Payments" && <Payments />}
+            {Record === "Payments" && (
+                <Payments 
+                    propertyId={id}
+                    transactions={transactions}
+                    loading={paymentsLoading}
+                    onRefresh={fetchTransactions}
+                />
+            )}
         </div>
     );
 }

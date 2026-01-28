@@ -1,88 +1,98 @@
-import {React,useState,useEffect} from "react"
-import {useLocation,useNavigate} from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 import NewCard from "../components/newCard.jsx"
 import axios from "axios"
 
-export default function MyLeased(){
+export default function MyLeased() {
     const navigate = useNavigate()
     const location = useLocation()
     const formData = location.state?.formData || {};
-    const [posts,setPosts] = useState([]);
-    console.log(posts);
-    console.log(formData)
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    
     const id = formData._id
     const url = "https://kejaapp-backend.onrender.com"
     
-    const cart = location.state?.cart || [];
-
-    const postLogOnly = false ;
-    console.log(postLogOnly);
-
-    console.log("Before function",formData.email);
-    const fetchMyRequests = () =>{
-        console.log("Inside function",{x: formData.email,y: id})
-       
-        axios.get(`${url}/requests/returnLeased/${id}`)
-        .then((response)=>{
-            console.log(response.data);
-            setPosts(response.data);
-        })
-        .catch(err => console.log("Error fetching data:", err));
-    }
-
     useEffect(() => {
-        setTimeout(() => {
-        console.log(" After timeout - formData.email:", formData.email);
-        if (formData.email) {
-            fetchMyRequests();
+        if (!id) {
+            setError("User not logged in");
+            setLoading(false);
+            return;
         }
-        }, 100);
-    }, [formData.email]);
-    //TODO : will change the post cards format later
+        
+        const fetchMyLeased = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get(`${url}/requests/returnLeased/${id}`);
+                console.log("Leased properties:", response.data);
+                setPosts(response.data);
+            } catch (err) {
+                console.error("Error fetching leased properties:", err);
+                setError("Failed to load leased properties");
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        fetchMyLeased();
+    }, [id]);
     
-
-   
-    /*handle cart prperly to backend
-    const[cart,setCart]= useState([])
-        function handleCart(newItem){
-                setCart(prev=>[
-                    ...prev,
-                    newItem
-                ])
-            
-        }
-        console.log(cart);
-*/
-
-
-    const cards = posts.map(item => (
+    if (loading) {
+        return <div>Loading your leased properties...</div>;
+    }
+    
+    if (error) {
+        return (
+            <div>
+                <h2>Error</h2>
+                <p>{error}</p>
+                <button onClick={() => navigate("/")}>Go Home</button>
+            </div>
+        );
+    }
+    
+    const cards = posts.map(item => {
+        // Check data structure
+        console.log("Item structure:", item);
+        
+        const postData = item.newPost || item;
+        
+        return (
             <NewCard
-               key={item._id}
-                {...item}
-                postLogOnly = {postLogOnly}
-                //cart={()=>handleCart(item)}
-                file={item.newPost.file}
-                description={item.newPost.posts.description}
-                price={item.newPost.posts.price}
-                title={item.newPost.posts.name}
-                location={item.newPost.posts.location}
-                isAdmin = {true}
-                personId = {id}
-                propertyId = {item.newPost._id}
-                canIpay = {item.acceptStatus}
+                key={postData._id}
+                _id={postData._id}
+                file={postData.file}
+                description={postData.description}
+                price={postData.price}
+                title={postData.title || postData.name}
+                location={postData.location}
+                isAdmin={false} // User is tenant, not admin
+                personId={id}
+                propertyId={postData._id}
+                canIpay={item.acceptStatus} // For recurring rent payments
+                formData={formData}
+                showRequestButton={false} // Already leased, can't request
             />
-        )
-    );
+        );
+    });
     
-    
-
-    return(
+    return (
         <div>
-            <h1>Your leased</h1>
-            <section className="cards-list">
-                {cards}
-               
-            </section>
+            <h1>Your Leased Properties ({posts.length})</h1>
+            
+            {posts.length === 0 ? (
+                <div className="no-leased">
+                    <p>You haven't leased any properties yet.</p>
+                    <button onClick={() => navigate("/browse")}>
+                        Browse Properties
+                    </button>
+                </div>
+            ) : (
+                <section className="cards-list">
+                    {cards}
+                </section>
+            )}
         </div>
     );
 }
