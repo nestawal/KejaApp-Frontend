@@ -9,7 +9,7 @@ import Lease from "./InfoRecord/postLeased.jsx";
 export default function AgentPostInfo() {
     const location = useLocation();
     const formData = location.state || {};
-    const { id } = useParams(); // This is the property/post ID
+    const { id } = useParams();
     const [post, setPost] = useState(null);
     const [Record, SetRecord] = useState("requests");
     const [postInfo, setPostInfo] = useState(null);
@@ -19,11 +19,12 @@ export default function AgentPostInfo() {
     const [error, setError] = useState(null);
     const [paymentsLoading, setPaymentsLoading] = useState(false);
     
+    // NEW: State to store the latest transaction for Lease section
+    const [latestTransaction, setLatestTransaction] = useState(null);
+    
     const url = "https://kejaapp-backend.onrender.com";
-    //const url = "http://localhost:3001"
 
     useEffect(() => {
-        // Only fetch if we have an ID
         if (!id) {
             console.error("No ID provided in URL");
             setError("No property ID provided");
@@ -37,29 +38,18 @@ export default function AgentPostInfo() {
             try {
                 console.log("Fetching post with ID:", id);
                 
-                // 1. Fetch post data
                 const postResponse = await axios.get(`${url}/Post/${id}`);
                 console.log("Post data:", postResponse.data);
                 setPost(postResponse.data);
                 
-                // 2. Fetch request data
                 const requestResponse = await axios.get(`${url}/requests/getRequest/${id}`);
                 console.log("Request data:", requestResponse.data);
                 
-                // Check if data exists
                 if (requestResponse.data && requestResponse.data.requestedId) {
                     const { requestedId } = requestResponse.data;
-                    
-                    // Set request info (pending array)
                     setRequestInfo(requestedId.pending || []);
-                    
-                    // Set post info (the entire requestedId object)
                     setPostInfo(requestedId);
-                    
-                    console.log("Pending requests:", requestedId.pending);
-                    console.log("Post info set:", requestedId);
                 } else {
-                    console.log("No request data found");
                     setRequestInfo([]);
                     setPostInfo(null);
                 }
@@ -68,7 +58,6 @@ export default function AgentPostInfo() {
                 console.error("Error fetching data:", error);
                 setError(error.message);
                 
-                // If it's a 404, the post might not exist
                 if (error.response?.status === 404) {
                     setError("Property not found");
                 } else if (error.response?.status === 500) {
@@ -80,9 +69,9 @@ export default function AgentPostInfo() {
         };
 
         findPost();
-    }, [id]); // Only re-run when id changes
+    }, [id]);
 
-    // Function to fetch transactions when Payments tab is selected
+    // Function to fetch transactions
     const fetchTransactions = async () => {
         if (!id) return;
         
@@ -93,12 +82,31 @@ export default function AgentPostInfo() {
             const response = await axios.get(`${url}/transactions/property/${id}`);
             console.log("Transactions response:", response.data);
             
-            setTransactions(response.data.transactions || []);
+            const fetchedTransactions = response.data.transactions || [];
+            setTransactions(fetchedTransactions);
+            
+            // NEW: Find the latest transaction to pass to Lease section
+            if (fetchedTransactions.length > 0) {
+                // Get the most recent transaction (already sorted by createdAt: -1)
+                const latest = fetchedTransactions[0];
+                setLatestTransaction({
+                    name: latest.personName,
+                    email: latest.personEmail,
+                    date: latest.createdAt || latest.formattedDate
+                });
+                console.log("Latest transaction set for Lease:", {
+                    name: latest.personName,
+                    email: latest.personEmail,
+                    date: latest.createdAt
+                });
+            } else {
+                setLatestTransaction(null);
+            }
             
         } catch (error) {
             console.error("Error fetching transactions:", error);
-            // Don't show error to user for payments, just log it
             setTransactions([]);
+            setLatestTransaction(null);
         } finally {
             setPaymentsLoading(false);
         }
@@ -115,7 +123,6 @@ export default function AgentPostInfo() {
         SetRecord(r);
         console.log("Selected record:", r);
         
-        // Optionally fetch transactions immediately when Payments is clicked
         if (r === "Payments" && id) {
             fetchTransactions();
         }
@@ -137,7 +144,6 @@ export default function AgentPostInfo() {
         );
     }
 
-    // Check if post data is loaded
     if (!post || !post.posts) {
         return <div>Loading post information...</div>;
     }
@@ -175,7 +181,12 @@ export default function AgentPostInfo() {
                 >
                     Accepted
                 </button>
-                <button className={Record === "Payments" ? "active" : ""} onClick={() => recordChoice("Lease")}>Lease</button> 
+                <button 
+                    className={Record === "Lease" ? "active" : ""} 
+                    onClick={() => recordChoice("Lease")}
+                >
+                    Lease
+                </button> 
                 <button 
                     onClick={() => recordChoice("Payments")}
                     className={Record === "Payments" ? "active" : ""}
@@ -198,11 +209,13 @@ export default function AgentPostInfo() {
             )}
 
             {Record === "Lease" && postInfo && (
-            <Lease
-                postInfo={postInfo}
-                property={post}
-                onUpdateLease={handleUpdateLease}
-            />
+                <Lease
+                    postInfo={postInfo}
+                    property={post}
+                    
+                    // NEW: Pass the latest transaction data
+                    latestPayment={latestTransaction}
+                />
             )}
             
             {Record === "Payments" && (

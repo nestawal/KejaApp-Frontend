@@ -19,7 +19,7 @@ export default function Dashboard(){
                 <p><strong>account balance:</strong>ksh{formData.balance}</p>
             </div>
             <div className="Dashboard">
-                <div className="dashComp" onClick={() => goToComp("posts")}>Myposts</div>
+                <div className="dashComp" onClick={() => goToComp("posts")}>My properties </div>
                 <div  className="dashComp" onClick={() => goToComp("myRequests")}>Requested</div>
                 <div  className="dashComp" onClick={() => goToComp("myLeased")}>Leased</div>
             </div>
