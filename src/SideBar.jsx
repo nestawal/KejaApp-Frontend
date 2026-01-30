@@ -9,7 +9,7 @@ export default function SideBar(props){
             <Link to='signUp'><button >SignUp</button></Link>
             <Link to='/cart' state={props.formData}><button  >Cart</button></Link>
             <Link to='Dashboard' state={props.formData}><button>DashBoard</button></Link>
-            <button>Log out</button>
+            <Link to='/'><button>Log out</button></Link>
         </div>
     )
 }
